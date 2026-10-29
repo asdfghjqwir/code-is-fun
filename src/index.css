@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+@theme {
+  --color-g-blue: #1a73e8;
+  --color-g-blue-light: #8ab4f8;
+  --color-g-red: #d93025;
+  --color-g-yellow: #fbbc05;
+  --color-g-green: #188038;
+  --color-g-tint: #f1f6fe;
+  --color-g-orange: #e37400;
+  --color-g-blue-tint: #e8f0fe;
+  --color-g-red-tint: #fce8e6;
+  --color-g-yellow-tint: #fef7e0;
+  --color-g-green-tint: #e6f4ea;
+
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-blink: blink 1s steps(1) infinite;
+  --animate-pop: pop 0.9s ease-out forwards;
+
+  @keyframes float {
+    50% {
+      transform: translateY(-26px) rotate(8deg);
+    }
+  }
+  @keyframes blink {
+    50% {
+      opacity: 0;
+    }
+  }
+  @keyframes pop {
+    from {
+      transform: translate(0, 0) rotate(0deg) scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: translate(var(--dx), var(--dy)) rotate(var(--rot)) scale(0.4);
+      opacity: 0;
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
