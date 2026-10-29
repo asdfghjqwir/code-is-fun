@@ -27,6 +27,7 @@
 ## 使用技術
 
 - [React](https://react.dev/) 19
+- [TypeScript](https://www.typescriptlang.org/)(strict)
 - [Vite](https://vite.dev/)
 - [Tailwind CSS](https://tailwindcss.com/) v4（`@tailwindcss/vite`）
 - Oxlint
@@ -55,10 +56,8 @@
 - あみだくじの結果を、友だちに送れるシェア用の画像にする
 - 診断のように、いくつかの質問に答えて向いている職種がわかる機能
 - スマホの実機での操作確認と、細かい表示崩れの調整
-- `App.jsx` が 1 ファイルに大きくなっているので、セクションごとのコンポーネントに分ける
 - 使っていない初期ファイル（`src/App.css`、`src/assets/`、`public/icons.svg`）の整理
-- 自動テストの追加（あみだくじの結果の計算、お絵かきコードの読み取りなど）
-- Oxlint の警告（描画中の `Math.random` など）の解消
+- 自動テストの追加（`lib/` の計算は画面に依存しないので、Vitest などで書きやすい）
 
 ## バイブコーディングについて
 
@@ -86,22 +85,39 @@ npm run dev     # 開発サーバー (http://localhost:5173/)
 ```
 
 ```bash
-npm run build   # 本番用ビルド (dist/ に出力)
+npm run typecheck # 型チェック
+npm run build   # 型チェック + 本番用ビルド (dist/ に出力)
 npm run preview # ビルド結果の確認
 npm run lint    # Oxlint でチェック
 ```
 
 ## フォルダ構成
 
+役割ごとにファイルを分けています。
+
 ```
 code-is-fun/
-├── index.html         # エントリーHTML
-├── vite.config.js     # React と Tailwind のプラグイン設定
+├── index.html
+├── vite.config.ts
+├── tsconfig*.json
 └── src/
-    ├── main.jsx       # React の起動
-    ├── App.jsx        # ページ全体（セクション・データ・処理）
-    └── index.css      # Tailwind の読み込みとテーマ色・アニメーション
+    ├── main.tsx            # React の起動
+    ├── App.tsx             # セクションを並べるだけ
+    ├── index.css           # Tailwind の読み込み・テーマ色・アニメーション
+    ├── types/              # 型の定義
+    ├── constants/          # 配色・ボタンの見た目などの定数
+    ├── data/               # 文章・職種・FAQ・プロフィールなどのデータ
+    ├── lib/                # 画面に依存しない計算(あみだ・お絵かきの読み取り など)
+    ├── hooks/              # 状態を持つ処理(ミッション・あみだ・タイピング など)
+    └── components/
+        ├── common/         # Section・Card・ボタンなど、共通の部品
+        ├── layout/         # Header・Footer・BackToTop
+        ├── confetti/       # 紙吹雪(Context で、どこからでも出せる)
+        └── sections/       # hero / missions / amida / jobs / faq / about ... セクションごと
 ```
+
+- **見た目と中身を分ける**: 文章や職種を変えたいときは `data/` だけ、計算を直したいときは `lib/` だけを見ればよい作りです。
+- **セクションの共通部品**: 背景色・余白・見出し・ふわっと表示は `components/common/Section.tsx` にまとめています。
 
 ## 注意
 
